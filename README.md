@@ -1,5 +1,5 @@
 # Ponteiro pascal
-### Trabalho da materia de estrutura de dados, utilizando ponteiro em pascal
+### Trabalho da materia de "Estrutura de dados", utilizando ponteiro em pascal duplamente encadeado.
 
 ## Questão
 Um organizador esportivo está solicitando um software que trabalhe com gerenciamento de memória (duplamente encadeado), para auxiliá-lo na atividade. O software deve trabalhar com estruturas lineares com encadeamento duplo, de tal forma que:<br>
