@@ -9,15 +9,15 @@ l = record
     prox:tListaPonteiro;
 end;
 
-procedure escreverListaString(lista:tListaPonteiro);
+procedure escreverListaString(lista, listaFim: tListaPonteiro; var qtd: integer; initFim: boolean);
 procedure escreverListaStringtst(lista:tListaPonteiro);
-procedure removerDaListaStringPorPosicao(posicao: integer; var lista: tListaPonteiro);
-procedure inserirNaListaString(valor: tipoInf;var lista: tListaPonteiro);
+procedure removerDaListaStringPorPosicao(posicao: integer; var lista, listaFim: tListaPonteiro; var qtd: integer);
+procedure inserirNaListaString(valor: tipoInf; var lista, listaFim: tListaPonteiro; var qtd: integer);
 procedure inicializarListaString(var lista: tListaPonteiro);
 
 implementation
 //Procedimentos
-procedure escreverListaString(lista: tListaPonteiro);
+procedure escreverListaString(lista, listaFim: tListaPonteiro; var qtd: integer; initFim: boolean);
 var aux:tListaPonteiro;
     posi:integer;
 begin
@@ -25,12 +25,29 @@ begin
         writeln('Lista vazia')
     else
     begin
+      if initFim then
+      begin
+        aux:=listaFim;
+        posi:=qtd;
+      end
+      else
+      begin
         aux:=lista;
+        posi:=1;
+      end;
         while (aux<>NIL) do
-        begin
-            posi:=posi+1;
+        begin 
             writeln(posi ,' - ',aux^.dado);
-            aux:=aux^.prox;
+            if initFim then
+            begin
+              aux:=aux^.anterior;
+              posi:=posi-1;
+            end
+            else
+            begin
+              aux:=aux^.prox;
+              posi:=posi+1;
+            end; 
         end;
     end;
     readkey;
@@ -41,8 +58,12 @@ procedure escreverListaStringtst(lista: tListaPonteiro);
 var aux:tListaPonteiro;
     posi:integer;
 begin
-    if (lista=NIL) then
-        writeln('Lista vazia')
+    if (true) then
+    begin 
+        writeln('Lista vazia');
+        writeln(lista^.anterior^.dado);
+        writeln(lista^.dado);
+    end
     else
     begin
         aux:=lista;
@@ -60,7 +81,7 @@ begin
     readkey;
 end;
 
-procedure removerDaListaStringPorPosicao(posicao: integer; var lista: tListaPonteiro);
+procedure removerDaListaStringPorPosicao(posicao: integer; var lista, listaFim: tListaPonteiro; var qtd: integer);
 var aux, anterior:tListaPonteiro;
     i:integer;
 begin
@@ -85,16 +106,32 @@ begin
         else
         begin
             if (aux=lista) then
-                lista:=lista^.prox
+                lista:=aux^.prox
             else
+            begin
                 anterior^.prox:=aux^.prox;
+                if (aux^.prox<>NIL) then
+                begin
+                    aux^.prox^.anterior:=anterior;
+                end;
+            end;
+            if (aux^.prox = nil) then
+                listaFim:=anterior
+            else
+            begin
+                if (anterior^.prox^.prox=nil) then
+                begin
+                    listaFim:=anterior^.prox;
+                end;
+            end;
             dispose(aux);
+            qtd:=qtd-1;
         end;
     end;
 end;  
 
 {Insere na lista de forma ordenada, considerando que ou será inserido no inicio ou depois de um elemento}
-procedure inserirNaListaString(valor: tipoInf; var lista: tListaPonteiro);
+procedure inserirNaListaString(valor: tipoInf; var lista, listaFim: tListaPonteiro; var qtd: integer);
 var atual, anterior, newValue: tListaPonteiro;
     bExiste: boolean;
 begin
@@ -136,6 +173,11 @@ begin
         newValue^.prox:=lista;
         lista:=newValue;
       end;
+      if not(bExiste) and (newValue^.prox=NIL) then
+        listaFim:=newValue;
+        
+      if not(bExiste) then
+        qtd:=qtd+1;
     end;
 end;
 
