@@ -10,6 +10,7 @@ type
 var fila: vet;
     op,posi_livre:integer;
     elem:string;
+    posi_remove:integer;
 
 procedure inicializa(var pos:integer);
 begin
@@ -35,20 +36,25 @@ begin
   end
 end;
 
-procedure remove_fila(var f:vet;var posi:integer);
+procedure remove_fila(var f:vet; var posi_remove:integer; var posi:integer);
 var i:integer;
 var el:string;
 begin
-  if posi>0 then 
-	begin
-     el:=f[1];
-     for i:=1 to posi-1 do
-        f[i]:=f[i+1];
-     posi:=posi-1;
-     writeln ('Elemento removido ',el);
+  if posi>0 then
+  Begin
+    if not(posi_remove>posi) then
+    begin
+      el:=f[posi_remove];
+      for i:=posi_remove to posi-1 do
+      f[i]:=f[i+1];
+      posi:=posi-1;
+      writeln ('Elemento removido ',el);
+    end
+    else
+    writeln ('Posição não existente');
   end
-  else 
-      writeln('Fila vazia');
+  else
+  writeln('Fila vazia');
   readkey
 end;
 
@@ -59,7 +65,7 @@ begin
 	if posi>0 then
 	begin
   	for I:=1 to posi do
-     	writeln ('Posi��o: ', I, ' Elemento: ', f[i],' ');
+     	writeln ('Posi��o: ', I, ' Elemento: ', f[i],' ');
   end
   else
   		writeln ('Fila vazia');
@@ -91,7 +97,11 @@ begin
        insere_fila(fila,posi_livre,elem);
      end 
 		 else if op =2 then 
-        remove_fila(fila,posi_livre)
+      begin
+        writeln ('Digite a posição do elemento que deseja removar: ');
+        readln (posi_remove);
+        remove_fila(fila, posi_remove, posi_livre);
+      end
      else if op=3 then 
 		 begin
          escreve_fila(fila,posi_livre);
