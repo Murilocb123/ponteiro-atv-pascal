@@ -1,38 +1,41 @@
-program index;
-uses crt, lista_string;
+program index_ponteiro;
+uses crt, 
+lista_string, 
+lista_ponteiro,
+views;
 
-var lista, listaFim:tListaPonteiro;
-    op, posi, qtd:integer;
+var lista, listaFim:tListaTimes;
+    op, posi,posi_remove, qtd:integer;
     valor:tipoInf;
+    elem:string;
 
 
 begin
-    inicializarListaString(lista);
+    inicializarListaPonteiro(lista);
+    clrscr;
+    op:=0;
     writeln('--------------------Bem vindo a lista ------------------');
     while(op<>6) do
     begin
-        writeln('1 - Inserir');
-        writeln('2 - Remover');
-        writeln('3 - Imprimir');
-        writeln('4 - Imprimir');
-        writeln('5 - Alterar');
-        writeln('6 - Sair');
 
+        viewMenu();
         readln(op);
         case op of
             1:begin
-                writeln('Digite o elemento a ser inserido');
-                readln(valor);
-                inserirNaListaString(valor,lista, listaFim, qtd);
+                viewInsert();
+                readln(elem);
+                valor.nome:=elem;
+                inicializarListaPonteiroTipoInf(valor);
+                inserirNaListaPonteiro(valor,lista, listaFim, qtd);
             end;
             2:begin
-                writeln('Digite a posicao a ser removida');
+                viewRemove();
                 readln(posi);
-                removerDaListaStringPorPosicao(posi,lista, listaFim, qtd);
+                removerDaListaPonteiroPorPosicao(posi,lista, listaFim, qtd);
             end;
-            3:escreverListaString(lista, listaFim, qtd, false);
-            4:escreverListaString(lista, listaFim, qtd, true);
-            5:escreverListaStringtst(listaFim)
+            3:escreverListaPonteiro(lista, listaFim, qtd, false);
+            4:escreverListaPonteiro(lista, listaFim, qtd, true);
+            5://escreverListaPonteirotst(listaFim)
         end;
         clrscr;
     end;

@@ -1,26 +1,30 @@
-unit lista_string;
+unit lista_ponteiro;
 
 interface
+uses crt, lista_string;
 type tipoInf = record
-     nome: string;
-     aces_rebaix:
-type tListaPonteiro = ^l;
+    nome:string;
+    acessos_rebaixamentos:tlista_string;
+    titulos:tlista_string;
+end;
+     
+type tListaTimes = ^l;
 l = record
-    anterior:tListaPonteiro;
+    anterior:tListaTimes;
     dado:tipoInf;
-    prox:tListaPonteiro;
+    prox:tListaTimes;
 end;
 
-procedure escreverListaString(lista, listaFim: tListaPonteiro; var qtd: integer; initFim: boolean);
-procedure escreverListaStringtst(lista:tListaPonteiro);
-procedure removerDaListaStringPorPosicao(posicao: integer; var lista, listaFim: tListaPonteiro; var qtd: integer);
-procedure inserirNaListaString(valor: tipoInf; var lista, listaFim: tListaPonteiro; var qtd: integer);
-procedure inicializarListaString(var lista: tListaPonteiro);
+procedure escreverListaPonteiro(lista, listaFim: tListaTimes; var qtd: integer; initFim: boolean);
+procedure removerDaListaPonteiroPorPosicao(posicao: integer; var lista, listaFim: tListaTimes; var qtd: integer);
+procedure inserirNaListaPonteiro(valor: tipoInf; var lista, listaFim: tListaTimes; var qtd: integer);
+procedure inicializarListaPonteiro(var lista: tListaTimes);
+procedure inicializarListaPonteiroTipoInf(var dado: tipoInf);
 
 implementation
 //Procedimentos
-procedure escreverListaString(lista, listaFim: tListaPonteiro; var qtd: integer; initFim: boolean);
-var aux:tListaPonteiro;
+procedure escreverListaPonteiro(lista, listaFim: tListaTimes; var qtd: integer; initFim: boolean);
+var aux:tListaTimes;
     posi:integer;
 begin
     if (lista=NIL) then
@@ -39,7 +43,7 @@ begin
       end;
         while (aux<>NIL) do
         begin 
-            writeln(posi ,' - ',aux^.dado);
+            writeln(posi ,' - ',aux^.dado.nome);
             if initFim then
             begin
               aux:=aux^.anterior;
@@ -55,36 +59,8 @@ begin
     readkey;
 end;
 
-{prova real}
-procedure escreverListaStringtst(lista: tListaPonteiro);
-var aux:tListaPonteiro;
-    posi:integer;
-begin
-    if (true) then
-    begin 
-        writeln('Lista vazia');
-        writeln(lista^.anterior^.dado);
-        writeln(lista^.dado);
-    end
-    else
-    begin
-        aux:=lista;
-        while (aux<>NIL) do
-        begin
-            posi:=posi+1;
-            writeln('-------------------');
-            writeln((posi-1) ,' - ',aux^.anterior^.dado);
-            writeln(posi ,' - ',aux^.dado);
-            writeln((posi+1) ,' - ',aux^.prox^.dado);
-            writeln('-------------------');
-            aux:=aux^.prox;
-        end;
-    end;
-    readkey;
-end;
-
-procedure removerDaListaStringPorPosicao(posicao: integer; var lista, listaFim: tListaPonteiro; var qtd: integer);
-var aux, anterior:tListaPonteiro;
+procedure removerDaListaPonteiroPorPosicao(posicao: integer; var lista, listaFim: tListaTimes; var qtd: integer);
+var aux, anterior:tListaTimes;
     i:integer;
 begin
     if (lista=NIL) then
@@ -133,8 +109,8 @@ begin
 end;  
 
 {Insere na lista de forma ordenada, considerando que ou será inserido no inicio ou depois de um elemento}
-procedure inserirNaListaString(valor: tipoInf; var lista, listaFim: tListaPonteiro; var qtd: integer);
-var atual, anterior, newValue: tListaPonteiro;
+procedure inserirNaListaPonteiro(valor: tipoInf; var lista, listaFim: tListaTimes; var qtd: integer);
+var atual, anterior, newValue: tListaTimes;
     bExiste: boolean;
 begin
   new(newValue);
@@ -142,15 +118,15 @@ begin
       writeln('Memoria cheia')
   else 
   begin
-      inicializarListaString(newValue^.anterior);
+      inicializarListaPonteiro(newValue^.anterior);
       newValue^.dado:=valor;
-      inicializarListaString(newValue^.prox);
-      if NOT(lista=NIL) and NOT (lista^.dado > newValue^.dado) then
+      inicializarListaPonteiro(newValue^.prox);
+      if NOT(lista=NIL) and NOT (lista^.dado.nome > newValue^.dado.nome) then
       begin
         atual:=lista;
-        while (atual<>NIL) and (atual^.dado <= newValue^.dado) and not(bExiste) do
+        while (atual<>NIL) and (atual^.dado.nome <= newValue^.dado.nome) and not(bExiste) do
         begin
-          if (atual^.dado = newValue^.dado) then
+          if (atual^.dado.nome = newValue^.dado.nome) then
             bExiste:=true;
           anterior:=atual;
           atual:=atual^.prox;
@@ -185,9 +161,15 @@ end;
 
 
 
-procedure inicializarListaString(var lista: tListaPonteiro);
+procedure inicializarListaPonteiro(var lista: tListaTimes);
 begin
   lista:=NIL;
+end;
+
+procedure inicializarListaPonteiroTipoInf(var dado: tipoInf);
+begin
+  inicializaListaString(dado.acessos_rebaixamentos);
+  inicializaListaString(dado.titulos);
 end;
 
 end.

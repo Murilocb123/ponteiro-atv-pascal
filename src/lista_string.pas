@@ -1,5 +1,4 @@
 unit lista_string;
-uses crt;
 interface
 const tam= 25;
 
@@ -7,19 +6,19 @@ type
    vet = array[1..tam] of string;
    
 type 
-lista_string = record
+tlista_string = record
      values: vet;
      posicao: integer;
 end;
 
-procedure inicializa(var lista:lista_string);
+procedure inicializaListaString(var lista:tlista_string);
 procedure ler_elemento(var el:string);
-procedure insere_fila(var f:lista_string; var el:string);
-procedure remove_fila(var f:lista_string; var posi:integer);
-procedure escreve_fila(f:lista_string);
+procedure insere_lista(var f:tlista_string; var el:string);
+procedure remove_lista(var f:tlista_string; var posi:integer);
+procedure escreve_lista(f:tlista_string);
 
 implementation
-procedure inicializa(var lista:lista_string);
+procedure inicializaListaString(var lista:tlista_string);
 begin
    lista.posicao:=0;
 end;
@@ -30,49 +29,69 @@ begin
   readln(el);
 end;
 
-procedure insere_fila(var f:lista_string; var el:string);
+{criar procedimento para inserir na lista de forma ordenada}
+procedure insere_lista(var f:tlista_string; var el:string);
+var i:integer;
 begin
-  if (lista_string.posicao<tam) then 
-	begin
-    lista_string.posicao:=lista_string.posicao+1;
-    lista_string.values[lista_string.posicao]:=el;
+  with f do begin
+  if posicao<tam then
+  begin
+    if posicao=0 then
+    begin
+      posicao:=posicao+1;
+      values[posicao]:=el;
+    end
+    else
+    begin
+      i:=posicao;
+      while (i>0) and (el<values[i]) do
+      begin
+        values[i+1]:=values[i];
+        i:=i-1;
+      end;
+      values[i+1]:=el;
+      posicao:=posicao+1;
+    end;
   end
-  else begin
-      writeln('Fila cheia');
-      readkey
-  end
+  else
+    writeln('lista cheia');
+  end;
 end;
 
-procedure remove_fila(var f:lista_string; var posi:integer);
+
+procedure remove_lista(var f:tlista_string; var posi:integer);
 var i:integer;
 var el:string;
 begin
-  if f.posicao>0 then
+  with f do begin 
+  if posicao>0 then
   Begin
-    if not(posi>f.posicao) then
+    if not(posi>posicao) then
     begin
-      el:=f.values[posi];
-      for i:=posi to f.posicao-1 do
-        f.values[i]:=f.values[i+1];
-      f.posicao:=f.posicao-1;
+      el:=values[posi];
+      for i:=posi to posicao-1 do
+        values[i]:=values[i+1];
+      posicao:=posicao-1;
       writeln ('Elemento removido ',el);
     end
     else
     writeln ('Posição não existente');
   end
   else
-  writeln('Fila vazia');
+  writeln('lista vazia');
+  end;
   readkey
 end;
 
-procedure escreve_fila(f:lista_string);
+procedure escreve_lista(f:tlista_string);
 var i:integer;
 begin
-	if posi>0 then
+	if f.posicao>0 then
 	begin
-  	for I:=1 to posi do
+  	for I:=1 to f.posicao do
      	writeln ('Posicao: ', I, ' Elemento: ', f.values[i],' ');
   end
   else
-  		writeln ('Fila vazia');
-end;                                                                        
+  		writeln ('lista vazia');
+end;  
+end.
