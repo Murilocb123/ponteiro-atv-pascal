@@ -7,8 +7,7 @@ views;
 var lista, listaFim:tListaTimes;
     op, posi,posi_remove, qtd:integer;
     valor:tipoInf;
-    elem:string;
-
+    elem:string; 
 
 begin
     inicializarListaPonteiro(lista);
@@ -33,9 +32,9 @@ begin
                 readln(posi);
                 removerDaListaPonteiroPorPosicao(posi,lista, listaFim, qtd);
             end;
-            3:escreverListaPonteiro(lista, listaFim, qtd, false);
-            4:escreverListaPonteiro(lista, listaFim, qtd, true);
-            5://escreverListaPonteirotst(listaFim)
+            3:escreverListaPonteiro(lista, qtd, false);
+            4:escreverListaPonteiro(listaFim, qtd, true);
+            5:alterarDadosListaPonteiro(lista, qtd);
         end;
         clrscr;
     end;

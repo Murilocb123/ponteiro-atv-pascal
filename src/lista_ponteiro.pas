@@ -1,7 +1,7 @@
 unit lista_ponteiro;
 
 interface
-uses crt, lista_string;
+uses crt, lista_string, views;
 type tipoInf = record
     nome:string;
     acessos_rebaixamentos:tlista_string;
@@ -15,15 +15,17 @@ l = record
     prox:tListaTimes;
 end;
 
-procedure escreverListaPonteiro(lista, listaFim: tListaTimes; var qtd: integer; initFim: boolean);
+procedure escreverListaPonteiro(lista: tListaTimes; var qtd: integer; initFim: boolean);
 procedure removerDaListaPonteiroPorPosicao(posicao: integer; var lista, listaFim: tListaTimes; var qtd: integer);
 procedure inserirNaListaPonteiro(valor: tipoInf; var lista, listaFim: tListaTimes; var qtd: integer);
 procedure inicializarListaPonteiro(var lista: tListaTimes);
 procedure inicializarListaPonteiroTipoInf(var dado: tipoInf);
+procedure alterarDadosListaPonteiro(var lista: tListaTimes; var qtd: integer);
+procedure atualizaUltimoElementoListaPonteiro(var listaFim: tListaTimes);
 
 implementation
 //Procedimentos
-procedure escreverListaPonteiro(lista, listaFim: tListaTimes; var qtd: integer; initFim: boolean);
+procedure escreverListaPonteiro(lista: tListaTimes; var qtd: integer; initFim: boolean);
 var aux:tListaTimes;
     posi:integer;
 begin
@@ -31,16 +33,11 @@ begin
         writeln('Lista vazia')
     else
     begin
+      aux:=lista;
       if initFim then
-      begin
-        aux:=listaFim;
-        posi:=qtd;
-      end
+        posi:=qtd
       else
-      begin
-        aux:=lista;
         posi:=1;
-      end;
         while (aux<>NIL) do
         begin 
             writeln(posi ,' - ',aux^.dado.nome);
@@ -170,6 +167,44 @@ procedure inicializarListaPonteiroTipoInf(var dado: tipoInf);
 begin
   inicializaListaString(dado.acessos_rebaixamentos);
   inicializaListaString(dado.titulos);
+end;
+
+procedure atualizaUltimoElementoListaPonteiro(var listaFim: tListaTimes);
+begin
+  if not(listaFim=NIL) then
+    listaFim:=listaFim^.anterior;
+end;
+
+procedure alterarDadosListaPonteiro(var lista: tListaTimes; var qtd: integer);
+var op, timePosi:integer;
+begin
+  escreverListaPonteiro(lista, qtd, false);
+  
+  while(timePosi > qtd) or (timePosi < 1) do
+  begin
+    viewUpdate();
+    readln(timePosi);
+    if (timePosi > qtd) or (timePosi < 1) then
+      writeln('Posicao invalida');
+    readkey;
+  end;
+  while (op <> 4) do
+  begin
+    viewMenuTime(lista^.dado.nome);
+    readln(op);
+    case op of
+      1: alterarDadosListaString(lista^.dado.titulos);
+      2: alterarDadosListaString(lista^.dado.acessos_rebaixamentos);
+      3: begin
+        writeln('----------------------titulos--------------------------');
+        escreve_lista(lista^.dado.titulos);
+        writeln('----------------acessos/rebaixamentos------------------');
+        escreve_lista(lista^.dado.acessos_rebaixamentos);
+        readkey;
+      end;
+      end;
+      clrscr();
+    end;
 end;
 
 end.

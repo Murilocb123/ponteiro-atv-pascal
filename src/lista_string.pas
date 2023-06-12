@@ -1,5 +1,6 @@
 unit lista_string;
 interface
+uses crt, views;
 const tam= 25;
 
 type
@@ -16,6 +17,7 @@ procedure ler_elemento(var el:string);
 procedure insere_lista(var f:tlista_string; var el:string);
 procedure remove_lista(var f:tlista_string; var posi:integer);
 procedure escreve_lista(f:tlista_string);
+procedure alterarDadosListaString(var lista:tlista_string);
 
 implementation
 procedure inicializaListaString(var lista:tlista_string);
@@ -93,5 +95,33 @@ begin
   end
   else
   		writeln ('lista vazia');
-end;  
+end; 
+
+procedure alterarDadosListaString(var lista:tlista_string);
+var opcao,posi:integer;
+    el:string;
+begin
+  escreve_lista(lista);
+  while opcao<>4 do
+  begin
+    viewMenuTimeDados();
+    readln(opcao);
+    case opcao of
+      1: begin
+        ler_elemento(el);
+        insere_lista(lista,el);
+      end;
+      2: begin
+        viewRemove();
+        readln(posi);
+        remove_lista(lista,posi);
+      end;
+      3: begin
+        escreve_lista(lista);
+        readkey;
+      end;
+    end;
+    clrscr();   
+  end;
+end;
 end.

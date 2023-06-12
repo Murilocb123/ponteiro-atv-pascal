@@ -4,6 +4,9 @@ interface
 procedure viewMenu();
 procedure viewInsert();
 procedure viewRemove();
+procedure viewMenuTime(value: string);
+procedure viewMenuTimeDados();
+procedure viewUpdate();
 
 implementation
 procedure viewMenu();
@@ -19,17 +22,48 @@ begin
         writeln('-------------------------');
 end;
 
+procedure viewMenuTimeDados();
+begin
+        writeln('-------------------------');
+        writeln('  Escolha uma opcao: ');
+        writeln('    1 - Inserir');
+        writeln('    2 - Remover');
+        writeln('    3 - Imprimir');
+        writeln('    4 - Voltar');
+        writeln('-------------------------');
+end;
+procedure viewMenuTime(value:string);
+begin
+        writeln('----------',value,'----------');
+        writeln('  Escolha uma opcao: ');
+        writeln('    1 - Alterar titulos');
+        writeln('    2 - Alterar acessos ou rebaixamentos');
+        writeln('    3 - Imprimir');
+        writeln('    4 - Voltar');
+        writeln('-------------------------');
+end;
+
+
 procedure viewInsert();
-begin 
+begin
     writeln('--------------------------------');
     writeln('Digite o elemento a ser inserido');
     writeln('--------------------------------');
 end;
 
+
 procedure viewRemove();
 begin
     writeln('--------------------------------');
     writeln('Digite o elemento a ser removido');
+    writeln('--------------------------------');
+end;
+
+
+procedure viewUpdate();
+begin
+    writeln('--------------------------------');
+    writeln('Digite o elemento a ser alterado');
     writeln('--------------------------------');
 end;
 
