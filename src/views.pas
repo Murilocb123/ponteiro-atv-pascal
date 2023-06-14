@@ -1,7 +1,8 @@
 unit views;
 interface
 
-procedure viewMenu();
+procedure viewSerieTimes();
+procedure viewMenu(value: string);
 procedure viewInsert();
 procedure viewRemove();
 procedure viewMenuTime(value: string);
@@ -9,16 +10,26 @@ procedure viewMenuTimeDados();
 procedure viewUpdate();
 
 implementation
-procedure viewMenu();
+
+procedure viewSerieTimes();
 begin
         writeln('-------------------------');
+        writeln('  Escolha uma opcao: ');
+        writeln('    1 - Serie A');
+        writeln('    2 - Serie B');
+        writeln('    3 - Sair');
+        writeln('-------------------------');
+end;
+procedure viewMenu(value: string);
+begin
+        writeln('----------Serie ',value,'----------');
         writeln('  Escolha uma opcao: ');
         writeln('    1 - Inserir');
         writeln('    2 - Remover');
         writeln('    3 - Imprimir');
         writeln('    4 - Imprimir de tras pra frente');
         writeln('    5 - Alterar');
-        writeln('    6 - Sair');
+        writeln('    6 - voltar');
         writeln('-------------------------');
 end;
 

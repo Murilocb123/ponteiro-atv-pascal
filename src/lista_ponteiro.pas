@@ -20,8 +20,9 @@ procedure removerDaListaPonteiroPorPosicao(posicao: integer; var lista, listaFim
 procedure inserirNaListaPonteiro(valor: tipoInf; var lista, listaFim: tListaTimes; var qtd: integer);
 procedure inicializarListaPonteiro(var lista: tListaTimes);
 procedure inicializarListaPonteiroTipoInf(var dado: tipoInf);
-procedure alterarDadosListaPonteiro(var lista: tListaTimes; var qtd: integer);
+procedure alterarDadosListaPonteiro(var lista, listaFim: tListaTimes; var qtd: integer);
 procedure atualizaUltimoElementoListaPonteiro(var listaFim: tListaTimes);
+function retornarListaPonteiroPorPosicao(posicao: integer; lista: tListaTimes): tListaTimes;
 
 implementation
 //Procedimentos
@@ -175,35 +176,74 @@ begin
     listaFim:=listaFim^.anterior;
 end;
 
-procedure alterarDadosListaPonteiro(var lista: tListaTimes; var qtd: integer);
+function retornarListaPonteiroPorPosicao(posicao: integer; lista: tListaTimes): tListaTimes;
+var aux:tListaTimes;
+    i:integer;
+begin
+    if (lista=NIL) then
+        writeln('Lista vazia')
+    else
+    begin
+        aux:=lista;
+        i:=1;
+        while (aux<>NIL) and (i<posicao) do
+        begin
+            aux:=aux^.prox;
+            i:=i+1;
+        end;
+        if (aux=NIL) then
+        begin
+            writeln('Posicao nao encontrada');
+            readkey;
+        end
+        else
+        begin
+            retornarListaPonteiroPorPosicao:=aux;
+        end;
+    end;
+end;
+
+
+procedure alterarDadosListaPonteiro(var lista, listaFim: tListaTimes; var qtd: integer);
 var op, timePosi:integer;
+    lista_aux: tListaTimes;
 begin
   escreverListaPonteiro(lista, qtd, false);
-  
-  while(timePosi > qtd) or (timePosi < 1) do
+  if(lista <> nil) then
   begin
-    viewUpdate();
-    readln(timePosi);
-    if (timePosi > qtd) or (timePosi < 1) then
-      writeln('Posicao invalida');
-    readkey;
-  end;
-  while (op <> 4) do
-  begin
-    viewMenuTime(lista^.dado.nome);
-    readln(op);
-    case op of
-      1: alterarDadosListaString(lista^.dado.titulos);
-      2: alterarDadosListaString(lista^.dado.acessos_rebaixamentos);
-      3: begin
-        writeln('----------------------titulos--------------------------');
-        escreve_lista(lista^.dado.titulos);
-        writeln('----------------acessos/rebaixamentos------------------');
-        escreve_lista(lista^.dado.acessos_rebaixamentos);
+    while(timePosi > qtd) or (timePosi < 1) do
+    begin
+      viewUpdate();
+      readln(timePosi);
+      if (timePosi > qtd) or (timePosi < 1) then
+      begin
+        writeln('Posicao invalida');
         readkey;
       end;
+      lista_aux:=retornarListaPonteiroPorPosicao(timePosi, lista);
+    end;
+    while (op <> 4) do
+    begin
+      viewMenuTime(lista_aux^.dado.nome);
+      readln(op);
+      case op of
+        1: alterarDadosListaString(lista_aux^.dado.titulos);
+        2: alterarDadosListaString(lista_aux^.dado.acessos_rebaixamentos);
+        3: begin
+          writeln('----------------------titulos--------------------------');
+          escreve_lista(lista_aux^.dado.titulos);
+          writeln('----------------acessos/rebaixamentos------------------');
+          escreve_lista(lista_aux^.dado.acessos_rebaixamentos);
+          readkey;
+        end;
+        end;
+        clrscr();
       end;
-      clrscr();
+      if (lista_aux^.anterior = nil) then
+        lista:=lista_aux
+      else if(lista_aux^.prox = nil) then
+        listaFim:=lista_aux;
+      lista_aux:=nil;
     end;
 end;
 
